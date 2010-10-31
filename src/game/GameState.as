@@ -45,7 +45,7 @@ package game
 	
 		override public function update(): void {
 			FlxU.collide(players, map);
-			
+			FlxU.collide(players, players);
 			
 			super.update();
 			

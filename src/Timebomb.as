@@ -7,7 +7,7 @@ package {
 	
 	public class Timebomb extends FlxGame {
 		public function Timebomb() {
-			super(320,240, GameState, 2);
+			super(640,480, GameState, 1);
 		}
 	}
 }
