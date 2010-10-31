@@ -28,7 +28,7 @@ package game
 			map.loadMap(
 				mapxml.(@name=="PlayingField").data,
 				tiles,
-				16, 16
+				24, 24
 			);
 			
 			background = new FlxSprite(0, 0, backgroundImage);

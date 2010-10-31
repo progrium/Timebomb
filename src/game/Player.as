@@ -21,13 +21,13 @@ package game {
 		public var parts:FlxGroup = new FlxGroup;
 		
 		public var torso:FlxSprite;
-		public var torsoOffset:FlxPoint = new FlxPoint(-5,0);
+		public var torsoOffset:FlxPoint = new FlxPoint(-5, 0);
 		
 		public var legs:FlxSprite;
 		public var legsOffset:FlxPoint = new FlxPoint(-5, 38); 
 		
 		public var bomb:FlxSprite;
-		public var bombOffset:FlxPoint = new FlxPoint(20,16);
+		public var bombOffset:FlxPoint = new FlxPoint(5,17);
 		
         public var playerIndex:int; 
         
@@ -70,6 +70,9 @@ package game {
 			torso.addAnimation("idle", [0]);
 			torso.addAnimation("run", [0, 1], 8);
 			torso.addAnimation("jump", [1]);
+			torso.addAnimation("idle-bomb", [2]);
+			torso.addAnimation("run-bomb", [2, 3], 8);
+			torso.addAnimation("jump-bomb", [3]);
             
 			
             maxVelocity.y = MAX_VELOCITY;
@@ -79,7 +82,7 @@ package game {
         
 		public function spawnBomb():void {
 			bomb = new Bomb(x+bombOffset.x,y+bombOffset.y);
-			parts.add(bomb);
+			//parts.add(bomb);
 		}
 		
         public function die(): void {
@@ -136,6 +139,9 @@ package game {
 		
 		override public function play(AnimName:String, Force:Boolean=false):void {
 			legs.play(AnimName, Force);
+			if (bomb) {
+				AnimName += "-bomb";
+			}
 			torso.play(AnimName, Force);
 		} 
         
@@ -143,11 +149,9 @@ package game {
             if( FlxG.keys.pressed(controls[p].left) ) {
                 torso.facing = LEFT;
 				legs.facing = LEFT;
-				bombOffset.x = -4;
             } else if( FlxG.keys.pressed(controls[p].right) ) {
                 torso.facing = RIGHT;
 				legs.facing = RIGHT;
-				bombOffset.x = 16;
             }
             
             if (onFloor) {
@@ -173,7 +177,7 @@ package game {
 			legs.y = y+legsOffset.y;
 			
 			if (bomb) {
-				bomb.x = x+bombOffset.x;
+				bomb.x = x+bombOffset.x + ((torso.facing == RIGHT) ? 17 : -17);
 				bomb.y = y+bombOffset.y;
 			}
 			
@@ -183,6 +187,7 @@ package game {
 		
 		override public function render():void {
 			//super.render();
+			if (bomb) bomb.render();
 			parts.render();
 		}
         
